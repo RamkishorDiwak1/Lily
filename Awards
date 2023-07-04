@@ -1,0 +1,197 @@
+/*
+
+===============================================================
+
+  LGM Productions
+
+===============================================================
+
+  Don't think about remixing, you won't get the results.
+
+===============================================================
+
+  Reminders:
+  
+  The results will be released on: 
+  July 8th, 2023 or July 9th, 2023 (Depends on the timezone)
+  
+  July 8th 2023 (7/8/2023):
+  
+  (+0200): 11:00PM
+  (+0100): 10:00PM
+  (-0000): 9:00PM
+  (-0100): 8:00PM
+  (-0200): 7:00PM
+  (-0300): 6:00PM
+  (-0400): 5:00PM << Eastern US Daylight ---
+  (-0500): 4:00PM << Central US Daylight    \ (US Daylight Time Zones)
+  (-0600): 3:00PM << Mountain US Daylight   /
+  (-0700): 2:00PM << Pacific US Daylight ---
+  (-0800): 1:00PM
+  (-0900): 12:00PM
+  (-1000): 11:00AM
+  (-1100): 10:00AM
+  (-1200): 9:00AM
+  
+  July 9th 2023 (7/9/2023):
+  
+  (+1200): 9:00AM
+  (+1100): 8:00AM
+  (+1000): 7:00AM
+  (+0900): 6:00AM
+  (+0800): 5:00AM
+  (+0700): 4:00AM
+  (+0600): 3:00AM
+  (+0500): 2:00AM
+  (+0400): 1:00AM
+  (+0300): 12:00AM
+  
+  
+================================================
+
+How do late submission votes work? 
+
+The times are based off the US Eastern Timezone. 
+
+Submitted before 5.20.23: -10%
+
+Submitted between 5.20.23 and 6.6.23: -20%
+
+Submitted between 6.6.23 and 6.15.23: -30%
+
+Submitted between 6.15.23 and 6.18.23: -40%
+
+Submitted between 6.18.23 and 6.25.23: -50%
+
+Submitted between 6.25.23 and 6.28.23: -60%
+
+Submitted between 6.28.23 and the deadline: -70%
+
+Submitted after the deadline: -100% (The project will not count.)
+ 
+=================================================================== 
+  
+*/
+
+function lateCutoff(votes, percent){
+  console.log((votes * (percent / 100)));
+  return votes - (votes * (percent / 100));
+}
+
+var realPointCost = 0.05;
+
+var placing = {
+  ranksTop: [
+    "[1st Place] 🏆",
+    "[2nd Place] 🥈",
+    "[3rd Place] 🥉", 
+    "[4th Place] 🏅",
+    "[5th Place] 🏅",
+    "[6th Place]",
+    "[7th Place]",
+    "[8th Place]",
+    "[9th Place]",
+    "[10th Place]",
+    "[11th Place]",
+    "[12th Place]",
+    "[13th Place]",
+    "[14th Place]",
+    "[15th Place]",
+    "[16th Place]",
+  ],
+  dateEnd: "July 8, 2023 21:00:00 GMT-0000",
+};
+
+/*
+function getUserId(){
+  return "obs_view";
+}
+*/
+
+setStyle("text_area1", "background: linear-gradient(rgb(136, 82, 181, 0.9), rgb(16, 2, 181, 0.5));");
+setStyle("image1", "opacity: 0.8;");
+
+var html = "";
+
+timedLoop(10, function(){
+  var t = LGMCountdown.load(placing.dateEnd, "");
+  var t2 = new Date(placing.dateEnd);
+  var $10 = function(n){return (n < 10 ? "0" : "") + n;};
+  var ddm = (t2.getMonth() + 1) + "/" + (t2.getDate()) + "/" + (t2.getFullYear()) + " at " + ((t2.getHours() % 12) || 12) + ":" + $10(t2.getMinutes()) + (t2.getHours() <= 12 ? " AM" : " PM");
+  
+  html = "";
+  
+  if (t[0] > 0 /*&& getUserId() != "g5A+fECCc/7tcq4Z5rg2ObadGEc"*/){
+    html += "<br><br><br><br><br><br><br>";
+    html += "<b><p style='font-size:30px;'>The Results</p><br>";
+    html+="<p style='font-size:19px;'>will be released in...</p></b><br><br>";
+    html += "<strong><p style='font-size:" + (Math.floor(t[0] / 86400000) > 30 ? "30" : "25") + "px;'>";
+    html += Math.floor(t[0] / 86400000) > 30 ? Math.floor(t[0] / 86400000) + " Days" : t[1];
+    html += "</strong></p>";
+    html += "<br><br><br><p>In your timezone,<br> the results will be released on:<br><br><strong>" + ddm;
+    html += "</strong></p><br><br><br><br><br><b>Do you want to play a game or check a webpage out while you are waiting?</b><br><br>";
+    html += "<a href='https://studio.code.org/projects/gamelab/EdJ7FNz08PjzOnzoMLR3-UD7Rnlcm8Bj7J4asNxiA2g'>LGM Galaxy</a><br>";
+    html += "<a href='https://studio.code.org/projects/gamelab/sF0_3LX4GZLQOahOenm1rn7MdSKxp3wWE1x3AuDwedk'>QuickRace (Beta)</a><br>";
+    html += "<a href='https://sites.google.com/view/lgm-awards/home'>The LGM Awards Website</a>";
+    html += "<br><br><br><br><br>";
+  } else {
+    stopTimedLoop();
+    loadLeaderboard();
+  }
+  innerHTML("text_area1", html);
+});
+
+
+function loadLeaderboard(){
+  html = "";
+  if (antiCheat()){
+    console.log("cheating");
+  } else {
+    setProperty("text_area1", "text-color", "black");
+    readRecords("Results", {}, function(records) {
+      html = "<div style='background-color: rgb(255, 255, 255); border-radius: 6px;'><br><p><h2>Welcome to The LGM Awards '23 Results!</h2><br><br>For this itteration, we have " + records.length + " submissions that have been ranked by me!<br><br>I mean LGM Productions <i>which is still me by the way</i>.<br><br>Anyways, here are the final results! Which did take way too much time to rank. Keep in mind that there were three or four projects did lose some RealPoints due to that project's lack of effort and other...<br><br>problems and bugs.<br><br>Also, please don't get angry at me or send/make any hate projects or hate messages as they will affect your quailfication for the next LGM Awards itteration.<br><br>Please keep in mind that I also took over 12 hours to rank all of these projects.</p><br>Ok, before you countinue, I will only showing the projects that have a flat score of 60 or higher.<br><br></div><br><br>";
+      var sorted = records.sort(function (a, b) {
+        return a.LGMGR - b.LGMGR;
+      });
+      for (var i in records){
+        if (/*records.length - parseInt(i) <= 10 && */records[i].LGMGR >= 60){
+        var r = records[i];
+        r.LGMGR = r.LGMGR || 0;
+        var realPoints = (r.Votes * realPointCost).toFixed(2);
+        realPoints = !isNaN(realPoints) ? realPoints : 0;
+        html += "<p style='font-size:23px;'>";
+        html += (placing.ranksTop[records.length - (parseInt(i) + 1)] || "") + "</p><br>";
+        html += '<br><div id="rank' + (1 + parseInt(i)) +'" style="width: 235px; background-color: rgb(255, 255, 255); border-radius: 9px;">';
+        html += '<p style="transform: translateY(5px);"><strong><a href="' + (r.Link || "https://studio.code.org") + '">' + (r.Name || "No-Named Entry") + '</a></strong></p><div style="transform: translateX(184%); translateY(12px); font-size: ' + Math.floor(45 / ((1 + ((r.LGMGR || 0).toString().length / 3)) || 1) ) + 'px; background-color: rgb('+ ((1-(r.LGMGR / 100))*255) + ',' + Math.floor((r.LGMGR/100)*255) + ',' + 0 +'); color: rgb(255,255,255); height: 50px; width: 50px; border-radius: 90px;"><strong><br>' + r.LGMGR + '</strong>';
+        html += '</div>';
+        if (r["Late Submission Time"]){
+          html += "<br><strong>Late Submission</strong><br>";
+        }
+        html += '<br><p>' + (r.Info || "No Information.") + '</p><br><br><i>Project Rank: #' + (records.length - parseInt(i)) + '</i>'; 
+        html += '<br><br><b>This submission got 🟣' + (realPoints || 0) + ' RealPoints.</b>';
+        html += '<br><br></div><br><br>';
+        }
+      }
+      html += "<br><br><div style='background-color: rgb(255, 255, 255); border-radius: 19px;'><br><br><strong>The winner of the LGM Awards is:</strong><br><br>" + records[records.length - 1].Name;
+      html += "<br>with <strong>" + (records[records.length - 1].Votes || "no") + " vote" + (records[records.length - 1].Votes==1?"":"s") +"</strong> and <strong>🟣" + (records[records.length - 1].Votes * realPointCost).toFixed(2)  + " RealPoints</strong>!";
+      html += "<br><br>Thank you for participating and/or spectating in this year's contest!<br><br>Please keep in mind that ranking most of these projects did take a while to do. (Including the ones that got a flat score that were less than 70.)<br><br>Well, this is the last show on code.org for the LGM Awards.<br><br>Next year, the award show might be hosted live on YouTube and/or Discord.<br><br><br><br><strong style='font-size:25px;'>The Final Verdict</strong><br><br><br>Well, I can't say anything else other than.. <br><br> ..thank you.. <br><br> for your support since 2020! 💖<br><br><br>Alright, see you on the other side.<br><br><strong>-LGM Productions :)</strong><br><br><br></div><br><br><br>";
+      html += "<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>";
+      html += "Ok, that's it.<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>There is nothing else here.<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>Like, there is nothing here.<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>Fine, you win.<br><br><a href='https://sites.google.com/view/lgm-awards/home'>New Website</a>";
+      innerHTML("text_area1", html);
+    });
+  }
+}
+
+
+function antiCheat(){
+  var c = false;
+  
+  if (placing.dateEnd != "July 8, 2023 21:00:00 GMT-0000" || 1 + 1 != 2 || 9 + 10 != 19){c = true;}
+  if (placing.ranksTop.length != 16){c = true;}
+  if (c != false && c != true){
+    c = true;
+  }
+  if (getUserId() == "g5A+fECCc/7tcq4Z5rg2ObadGEc"){c = false;}
+  return c;
+  
+}
